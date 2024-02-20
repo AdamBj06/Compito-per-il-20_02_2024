@@ -11,41 +11,28 @@ namespace Compito_per_il_20_02_2024
     {
         static void Main(string[] args)
         {
-            Quadrato piano = new Quadrato(400 * Math.Pow(10, 6));
+            const double G = 6.673e-11;
 
-            Corpo m1 = new Corpo(6 * Math.Pow(10, 24), 0, 0);
-            Corpo m2 = new Corpo(7 * Math.Pow(10, 22), piano.Lato, 0);
-            Corpo m3 = new Corpo(m2.Massa, piano.Lato, piano.Lato);
-            Corpo m4 = new Corpo(m2.Massa, 0, piano.Lato);
+            Corpo m1 = new Corpo(6e24, new Vettore(0, 0));
+            Corpo m2 = new Corpo(7e22, new Vettore(400e6, 0));
+            Corpo m3 = new Corpo(m2.Massa, new Vettore(400e6, 400e6));
+            Corpo m4 = new Corpo(m2.Massa, new Vettore(0, 400e6));
 
-            Vettore gravità = new Vettore(0, -9.81d);//vettore accelerazione di gravità
-            Vettore peso1 = m1.Massa * gravità;//vettore forza peso
-            Vettore normale1 = -peso1;//vettore forza vincolante del tavolo
-
-            Vettore forza = peso1 + normale1;//vettore forza risultante
+            Vettore gravità2_1 = G * m1.Massa * m2.Massa / Vettore.Modulo(m2.Posizione) * (m2.Posizione / Vettore.Modulo(m2.Posizione));
+            Vettore gravità3_1 = G * m1.Massa * m3.Massa / Vettore.Modulo(m3.Posizione) * (m3.Posizione / Vettore.Modulo(m3.Posizione));
+            Vettore gravità4_1 = G * m1.Massa * m4.Massa / Vettore.Modulo(m4.Posizione) * (m4.Posizione / Vettore.Modulo(m4.Posizione));
 
             Console.ReadKey();
-        }
-
-        public class Quadrato
-        {
-            public double Lato { get; set; }
-            public Quadrato(double l)
-            {
-                Lato = l;
-            }
         }
 
         public class Corpo
         {
             public double Massa { get; set; }
-            public double PosX { get; set; }
-            public double PosY { get; set; }
-            public Corpo(double m, double x, double y)
+            public Vettore Posizione { get; set; }
+            public Corpo(double m, Vettore pos)
             {
                 Massa = m;
-                PosX = x;
-                PosY = y;
+                Posizione = pos;
             }
         }
     }
